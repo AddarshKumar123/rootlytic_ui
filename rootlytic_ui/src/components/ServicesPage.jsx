@@ -1,0 +1,80 @@
+// ServicesPage.js
+import React ,{ useEffect, useState } from 'react';
+import {useParams} from "react-router-dom"
+import axios from "axios";
+import "../css/Service.css"
+const ServicesPage = () => {
+  // Mock data for your errors
+  const [selectedError, setSelectedError] = useState(null);
+  const [errors,setErrors]=useState([]);
+  const {id} =useParams();
+  console.log(id);
+
+  useEffect(()=>{
+    const fetchLogs=async()=>{
+      const res=await axios.get(`http://localhost:5050/${id}/getlogs`);
+      setErrors(res.data);
+
+    };
+    fetchLogs();
+  },[])
+
+  return (
+    <div className="dashboard-wrapper">
+      <aside className="sidebar">
+        <div className="sidebar-logo">RootLytic</div>
+        <nav>
+          <div className="nav-item active">Recent Errors</div>
+          <div className="nav-item">Historical Logs</div>
+          <div className="nav-item">Settings</div>
+        </nav>
+      </aside>
+
+      <section className="error-list">
+        <h2>Live Errors</h2>
+        {errors.map(err => (
+          <div 
+            key={err._id} 
+            className={`error-item ${selectedError?._id === err._id ? 'active' : ''}`}
+            onClick={() => setSelectedError(err)}
+          >
+            <h4>{err.exceptionType}</h4>
+            <p className="err-msg">{err.message}</p>
+            <small>{err.timestamp}</small>
+          </div>
+        ))}
+      </section>
+
+      <main className="detail-pane">
+        {selectedError ? (
+          <div className="detail-content">
+            <header className="detail-header">
+              <h2>Error Details</h2>
+              <span className="file-path">{selectedError.fileName}</span>
+            </header>
+
+            <div className="stack-trace-box">
+              <h4>Stack Trace</h4>
+              <code>{selectedError.stack}</code>
+            </div>
+
+            <div className="gemini-fix-card">
+              <div className="ai-header">
+                <span className="ai-sparkle">✨</span>
+                <h4>Gemini AI Suggested Fix</h4>
+              </div>
+              <p>{selectedError.aiFix}</p>
+              <button className="btn-apply">Copy Fix to Clipboard</button>
+            </div>
+          </div>
+        ) : (
+          <div className="empty-state">
+            <p>Select an error from the list to see AI-powered fixes.</p>
+          </div>
+        )}
+      </main>
+    </div>
+  );
+};
+
+export default ServicesPage;
