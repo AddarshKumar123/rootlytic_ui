@@ -30,7 +30,6 @@ const IntegrationPage = () => {
 
       <main className="detail-pane">
         <h1>Link your Application</h1>
-        <p>Follow these steps to start streaming logs to Gemini AI.</p>
         
         <div className="doc-section">
           <h3>1. Installation</h3>

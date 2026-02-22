@@ -1,8 +1,18 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import {React,useContext,useEffect} from 'react';
+import { Link,useNavigate } from 'react-router-dom';
+import { AuthContext } from '../AuthHandler/AuthContext';
 import '../App.css';
 
 const LandingPage = () => {
+  const { isAuthenticated } = useContext(AuthContext);
+  const navigate = useNavigate();  
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate("/dashboard");
+    }
+  }, [isAuthenticated]);
+  
   return (
     <div className="landing-container">
       <nav className="navbar">

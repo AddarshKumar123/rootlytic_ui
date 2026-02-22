@@ -3,17 +3,24 @@ import React ,{ useEffect, useState } from 'react';
 import {useParams} from "react-router-dom"
 import axios from "axios";
 import "../css/Service.css"
+import data from "../endpoint"
 const ServicesPage = () => {
-  // Mock data for your errors
+  const endpoint=data.server_endpoint;
   const [selectedError, setSelectedError] = useState(null);
   const [errors,setErrors]=useState([]);
   const {id} =useParams();
-  console.log(id);
 
   useEffect(()=>{
     const fetchLogs=async()=>{
-      const res=await axios.get(`http://localhost:5050/${id}/getlogs`);
-      setErrors(res.data);
+      try{
+          const res=await axios.get(`${endpoint}/${id}/getlogs`,{
+            withCredentials:true
+          });
+          setErrors(res.data);
+      }catch(err){
+        if(err.response.status==403){
+        }
+      }
 
     };
     fetchLogs();

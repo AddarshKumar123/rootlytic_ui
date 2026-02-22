@@ -1,12 +1,31 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import axios from "axios"
 import '../css/Auth.css';
+import data from "../endpoint"
 
 export const Login = () => {
+  const endpoint=data.server_endpoint;
   const navigate = useNavigate();
-  const handleSubmit = (e) => {
+  const [formData,setFormData]=useState({
+    email:null,
+    password:null
+  })
+
+  const handleInputChange=(field,value)=>{
+    setFormData((prev)=>({...prev, [field]:value}))
+  }
+  const handleSubmit = async(e) => {
     e.preventDefault();
-    navigate('/dashboard'); 
+    try{        
+        await axios.post(`${endpoint}/login`,
+            formData,
+            {withCredentials:true}
+        )
+        navigate('/dashboard');
+    }catch(err){
+      console.log(err);
+    }
   };
 
   return (
@@ -17,11 +36,25 @@ export const Login = () => {
         <form onSubmit={handleSubmit}>
           <div className="form-group">
             <label>Email Address</label>
-            <input type="email" placeholder="name@company.com" required />
+            <input
+              type="email"
+              placeholder=""
+              value={formData.email || ""}
+              onChange={(e)=>
+                handleInputChange("email",e.target.value)
+              }
+              required />
           </div>
           <div className="form-group">
             <label>Password</label>
-            <input type="password" placeholder="" required />
+            <input
+              type="password"
+              placeholder=""
+              value={formData.password || ""}
+              onChange={(e)=>
+                handleInputChange("password",e.target.value)
+              }
+              required />
           </div>
           <button type="submit" className="btn-primary full-width">Sign In</button>
         </form>
@@ -34,6 +67,7 @@ export const Login = () => {
 };
 
 export const Signup = () => {
+  const endpoint=data.server_endpoint;
   const navigate = useNavigate();
   const [formData,setFormData]=useState({
     email:null,
@@ -43,9 +77,18 @@ export const Signup = () => {
   const handleInputChange=(field,value)=>{
     setFormData((prev)=>({...prev, [field]:value}))
   }
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
-    navigate('/dashboard');
+    try{
+        
+        await axios.post(`${endpoint}/register`,
+            formData,
+            {withCredentials:true}
+        )
+        navigate('/dashboard');
+    }catch(err){
+      console.log(err);
+    }
   };
 
   return (
@@ -54,10 +97,6 @@ export const Signup = () => {
         <h2>Get Started</h2>
         <p>Start fixing bugs faster with Gemini AI.</p>
         <form onSubmit={handleSubmit}>
-          <div className="form-group">
-            <label>Full Name</label>
-            <input type="text" placeholder="" required />
-          </div>
           <div className="form-group">
             <label>Work Email</label>
             <input
@@ -72,7 +111,7 @@ export const Signup = () => {
           <div className="form-group">
             <label>Password</label>
             <input
-              type="email"
+              type="password"
               placeholder=""
               value={formData.password || ""}
               onChange={(e)=>

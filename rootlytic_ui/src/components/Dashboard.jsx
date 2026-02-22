@@ -3,8 +3,10 @@ import {Link} from "react-router-dom"
 import { useNavigate } from 'react-router-dom';
 import axios from "axios"
 import '../css/Dashboard.css';
+import data from "../endpoint"
 
 const Dashboard = () => {
+  const endpoint=data.server_endpoint;
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
   const [apiKey,setApiKey]=useState(null);
@@ -15,9 +17,16 @@ const Dashboard = () => {
 
   useEffect(()=>{
     const fetchService=async()=>{
-      const res=await axios.get("http://localhost:5050/fetch_application");
-      setServices(res.data);
-      console.log(res);
+      try{
+          const res=await axios.get(`${endpoint}/fetch_application`,{
+            withCredentials:true
+          });
+          setServices(res.data);
+      }catch(err){
+          if(err.response.status==403){
+            navigate("/login");
+        }
+      }
       
     };
     fetchService();
@@ -30,7 +39,9 @@ const Dashboard = () => {
       type:serviceType
     }
     
-    const res=await axios.post("http://localhost:5050/create_application",formData);
+    const res=await axios.post(`${endpoint}/create_application`,formData,{
+      withCredentials:true
+    });
     setApiKey(res.data);
     
     setIsCreateModalOpen(false);
