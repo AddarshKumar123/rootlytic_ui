@@ -1,4 +1,3 @@
-// ServicesPage.js
 import React ,{ useEffect, useState } from 'react';
 import {useParams} from "react-router-dom"
 import axios from "axios";
@@ -9,6 +8,10 @@ const ServicesPage = () => {
   const [selectedError, setSelectedError] = useState(null);
   const [errors,setErrors]=useState([]);
   const {id} =useParams();
+
+  const handleAiFix=async(id)=>{
+    await axios.post(`${endpoint}/ai-fix/${id}`,{},{withCredentials:true});        
+  }
 
   useEffect(()=>{
     const fetchLogs=async()=>{
@@ -71,7 +74,7 @@ const ServicesPage = () => {
                 <h4>Gemini AI Suggested Fix</h4>
               </div>
               <p>{selectedError.aiFix}</p>
-              <button className="btn-apply">Copy Fix to Clipboard</button>
+              <button onClick={()=>{handleAiFix(selectedError._id)}} className="btn-apply">get Ai Fix</button>
             </div>
           </div>
         ) : (
