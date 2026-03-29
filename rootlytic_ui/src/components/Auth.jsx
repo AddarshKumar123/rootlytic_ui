@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import { Spinner } from "@chakra-ui/react"
+import { Toaster, toaster } from "@/components/ui/toaster"
 import axios from "axios"
 import '../css/Auth.css';
 import data from "../endpoint"
@@ -11,25 +13,34 @@ export const Login = () => {
     email:null,
     password:null
   })
+  const [loading,setLoading]=useState(false);
 
   const handleInputChange=(field,value)=>{
     setFormData((prev)=>({...prev, [field]:value}))
   }
   const handleSubmit = async(e) => {
     e.preventDefault();
+    setLoading(true);
     try{        
         await axios.post(`${endpoint}/login`,
             formData,
             {withCredentials:true}
         )
+        toaster.create({
+          title: "Logged in",
+          description: "You are logged in sucessfull",
+        })
         navigate('/dashboard');
     }catch(err){
       console.log(err);
+    }finally{
+      setLoading(false);
     }
-  };
+  };  
 
   return (
     <div className="auth-container">
+      <Toaster />
       <div className="auth-card">
         <h2>Welcome Back</h2>
         <p>Log in to manage your application logs.</p>
@@ -56,7 +67,7 @@ export const Login = () => {
               }
               required />
           </div>
-          <button type="submit" className="btn-primary full-width">Sign In</button>
+          <button type="submit" className="btn-primary full-width">{loading?<Spinner size="sm" />: "Sign In"}</button>
         </form>
         <p className="auth-footer">
           Don't have an account? <Link to="/signup">Create one</Link>

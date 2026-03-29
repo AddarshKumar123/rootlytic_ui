@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import {Link} from "react-router-dom"
 import { useNavigate } from 'react-router-dom';
+import { Badge, Stack } from "@chakra-ui/react"
+import { Avatar, Button, Card } from "@chakra-ui/react"
+import { Text } from "@chakra-ui/react"
 import axios from "axios"
 import '../css/Dashboard.css';
 import data from "../endpoint"
@@ -58,28 +61,49 @@ const Dashboard = () => {
     <div className="dashboard-wrapper">
       <main className="detail-pane">
         <header className="page-header">
-          <h1>My Services</h1>
-          <button className="btn-primary" onClick={() => setIsCreateModalOpen(true)}>
+          <Text textStyle={"4xl"}>My Services</Text>
+          {/* <button className="btn-primary" onClick={() => setIsCreateModalOpen(true)}>
             + Create New Service
-          </button>
+          </button> */}
+
+          <Button onClick={() => setIsCreateModalOpen(true)} mt={"10"} colorPalette="teal" variant="outline">
+            + Create New Service
+          </Button>
         </header>
 
         <div className="services-grid">
           {services.length>0 ? 
           (services.map(service => (
-            <div key={service.id} className="service-card">
-              <div className="card-top">
-                <h3>{service.applicationName}</h3>
-                {/* <span className={`status-dot ${service.status.toLowerCase()}`}></span> */}
-              </div>
-              <p>{service.type}</p>
-              <div className="card-stats">
-                <strong>{service.errorLogs.length}</strong> Errors detected
-              </div>
-              <Link to={`/${service.id}/services`}>
-              <button className="btn-outline">View Logs</button>
-              </Link>
-            </div>
+            // <div key={service.id} className="service-card">
+            //   <div className="card-top">
+            //     <h3>{service.applicationName}</h3>
+            //     {/* <span className={`status-dot ${service.status.toLowerCase()}`}></span> */}
+            //   </div>
+            //   <p>{service.type}</p>
+            //   <div className="card-stats">
+            //     <strong>{service.errorLogs.length}</strong> Errors detected
+            //   </div>
+            //   <Link to={`/${service.id}/services`}>
+            //   <button className="btn-outline">View Logs</button>
+            //   </Link>
+            // </div>
+            <Card.Root className='card' width="320px">
+              <Card.Body gap="2">
+                <Card.Title mt="2">{service.applicationName}</Card.Title>
+                <Card.Description>
+                  This is the card body. Lorem ipsum dolor sit amet, consectetur
+                  adipiscing elit. Curabitur nec odio vel dui euismod fermentum.
+                  Curabitur nec odio vel dui euismod fermentum.
+                </Card.Description>
+              </Card.Body>
+              <Card.Footer justifyContent="flex-end">
+                  <Button  
+                    as={Link}
+                    to={`/${service.id}/services`} 
+                    className='button' 
+                    variant="outline">View Logs</Button>
+              </Card.Footer>
+            </Card.Root>
           ))) :
           (
             <div>No any services found . Please create one service </div>

@@ -1,5 +1,6 @@
 import {React,useContext,useEffect} from 'react';
 import { Link,useNavigate } from 'react-router-dom';
+import { Avatar, Button, Card } from "@chakra-ui/react"
 import { AuthContext } from '../AuthHandler/AuthContext';
 import '../App.css';
 
@@ -12,6 +13,21 @@ const LandingPage = () => {
       navigate("/dashboard");
     }
   }, [isAuthenticated]);
+
+  const cardData=[
+    {
+      "title":"Instant Extraction",
+      'description':"Seamlessly connect your app's stdout or log files directly to our secure parser."
+    },
+    {
+      "title":"Intelligent Parsing",
+      "description":"Automatically categorize errors, warnings, and stack traces with high precision."
+    },
+    {
+      "title":"AI Fixes",
+      "description":"Receive context-aware code snippets to resolve production bugs in seconds."
+    }
+  ]
   
   return (
     <div className="landing-container">
@@ -36,18 +52,20 @@ const LandingPage = () => {
       </header>
 
       <section className="features">
-        <div className="feature-card">
-          <h3>Instant Extraction</h3>
-          <p>Seamlessly connect your app's stdout or log files directly to our secure parser.</p>
-        </div>
-        <div className="feature-card">
-          <h3>Intelligent Parsing</h3>
-          <p>Automatically categorize errors, warnings, and stack traces with high precision.</p>
-        </div>
-        <div className="feature-card">
-          <h3>AI Fixes</h3>
-          <p>Receive context-aware code snippets to resolve production bugs in seconds.</p>
-        </div>
+        {
+        
+        cardData.map((card)=>(
+          <Card.Root className="feature-card">
+          <div className="feature-card-border"></div>
+            <Card.Body gap="2">
+              <Card.Title mt="2">{card.title}</Card.Title>
+              <Card.Description>
+                {card.description}
+              </Card.Description>
+            </Card.Body>
+          </Card.Root>
+        ))
+        }
       </section>
     </div>
   );

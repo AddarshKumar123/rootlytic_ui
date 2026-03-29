@@ -3,9 +3,12 @@ import {useParams} from "react-router-dom"
 import axios from "axios";
 import "../css/Service.css"
 import data from "../endpoint"
+import TimeRangePicker from "./TimeRangePicker"
+
 const ServicesPage = () => {
   const endpoint=data.server_endpoint;
   const [selectedError, setSelectedError] = useState(null);
+  const [timeRange, setTimeRange] = useState(null);
   const [errors,setErrors]=useState([]);
   const {id} =useParams();
 
@@ -29,12 +32,35 @@ const ServicesPage = () => {
     fetchLogs();
   },[])
 
+  
+  
+  const handleTime = async(e) =>{
+    setTimeRange(e);
+    try{
+        const res=await axios.get(`${endpoint}/new`,
+        {
+          params:{
+            since: new Date(e.start).getTime()
+          },
+          withCredentials:true
+        },
+      );
+        console.log(res);
+    }catch(err){
+      console.log(err);
+      
+    }
+    
+  }
+  
+  
+
   return (
     <div className="dashboard-wrapper">
       <aside className="sidebar">
         <div className="sidebar-logo">RootLytic</div>
         <nav>
-          <div className="nav-item active">Recent Errors</div>
+          <div className="nav-item active"> <TimeRangePicker onChange={(e)=>{handleTime(e)}} /></div>
           <div className="nav-item">Historical Logs</div>
           <div className="nav-item">Settings</div>
         </nav>
