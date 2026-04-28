@@ -9,7 +9,7 @@
 
 .sidebar {
   width: 240px;
-  background-color: #1e293b;
+  /* background-color: #1e293b; */
   border-right: 1px solid #334155;
   padding: 1.5rem;
 }
@@ -37,7 +37,7 @@
 /* List Pane */
 .error-list {
   width: 350px;
-  background-color: #0f172a;
+  /* background-color: #0f172a; */
   border-right: 1px solid #334155;
   padding: 1rem;
   overflow-y: auto;
