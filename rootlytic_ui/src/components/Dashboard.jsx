@@ -13,8 +13,13 @@ const Dashboard = () => {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
   const [apiKey,setApiKey]=useState(null);
-  const [serviceName, setServiceName] = useState('');
-  const [serviceType, setServiceType] = useState('Backend');
+  const [formData, setFormData] = useState({
+    serviceName: '',
+    serviceType: 'springboot',
+    githubUsername: '',
+    repoName: '',
+    branch: ''
+  });
   const [services,setServices] = useState([]);
   const navigate = useNavigate();
 
@@ -37,16 +42,19 @@ const Dashboard = () => {
 
   const handleCreate = async(e) => {
     e.preventDefault();
-    const formData={
-      applicationName:serviceName,
-      type:serviceType
+    const data={
+      applicationName: formData.serviceName,
+      type: formData.serviceType,
+      githubUsername: formData.githubUsername,
+      repoName: formData.repoName,
+      branch: formData.branch
     }
-    
-    const res=await axios.post(`${endpoint}/create_application`,formData,{
+
+    const res=await axios.post(`${endpoint}/create_application`,data,{
       withCredentials:true
     });
     setApiKey(res.data);
-    
+
     setIsCreateModalOpen(false);
     setIsSuccessModalOpen(true);
 
@@ -54,7 +62,7 @@ const Dashboard = () => {
 
   const handleProceedToDocs = () => {
     setIsSuccessModalOpen(false);
-    navigate('/integration', { state: { name: serviceName } });
+    navigate('/integration', { state: { name: formData.serviceName } });
   };
   
   return (
@@ -120,21 +128,50 @@ const Dashboard = () => {
               <form onSubmit={handleCreate}>
                 <div className="form-group">
                   <label>Service Name</label>
-                  <input 
-                    type="text" 
-                    placeholder="e.g. Payment-Gateway-Prod" 
-                    value={serviceName}
-                    onChange={(e) => setServiceName(e.target.value)}
+                  <input
+                    type="text"
+                    value={formData.serviceName}
+                    onChange={(e) => setFormData({...formData, serviceName: e.target.value})}
                     required
                   />
                 </div>
-                
+
                 <div className="form-group">
-                  <label>Environment</label>
-                  <select value={serviceType} onChange={(e) => setServiceType(e.target.value)}>
+                  <label>Service Type</label>
+                  <select value={formData.serviceType} onChange={(e) => setFormData({...formData, serviceType: e.target.value})}>
                     <option value="springboot">springboot</option>
                     <option value="react">react</option>
                   </select>
+                </div>
+
+                <div className="form-group">
+                  <label>GitHub Username</label>
+                  <input
+                    type="text"
+                    value={formData.githubUsername}
+                    onChange={(e) => setFormData({...formData, githubUsername: e.target.value})}
+                    required
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label>Repository Name</label>
+                  <input
+                    type="text"
+                    value={formData.repoName}
+                    onChange={(e) => setFormData({...formData, repoName: e.target.value})}
+                    required
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label>Branch</label>
+                  <input
+                    type="text"
+                    value={formData.branch}
+                    onChange={(e) => setFormData({...formData, branch: e.target.value})}
+                    required
+                  />
                 </div>
 
                 <div className="modal-actions">

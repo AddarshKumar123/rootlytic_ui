@@ -11,6 +11,7 @@ const ServicesPage = () => {
   const [selectedError, setSelectedError] = useState(null);
   const [timeRange, setTimeRange] = useState(null);
   const [errors,setErrors]=useState([]);
+  const [allErrors,setAllErrors]=useState([]);
   const {id} =useParams();
 
   const handleAiFix=async(id)=>{
@@ -23,6 +24,7 @@ const ServicesPage = () => {
           const res=await axios.get(`${endpoint}/${id}/getlogs`,{
             withCredentials:true
           });
+          setAllErrors(res.data);
           setErrors(res.data);
       }catch(err){
         if(err.response.status==403){
@@ -37,22 +39,7 @@ const ServicesPage = () => {
   
   const handleTime = async(e) =>{
     setTimeRange(e);
-    try{
-        const res=await axios.get(`${endpoint}/new`,
-        {
-          params:{
-            since: new Date(e.start).getTime()
-          },
-          withCredentials:true
-        },
-      );
-        console.log(res);
-        setErrors(res.data)
-    }catch(err){
-      console.log(err);
-      
-    }
-    
+    setErrors(allErrors.filter(err => err.timestamp >= e.start && err.timestamp <= e.end));
   }  
   const shikiAdapter = createShikiAdapter({
     async load() {
