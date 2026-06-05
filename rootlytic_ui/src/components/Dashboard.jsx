@@ -69,15 +69,12 @@ const Dashboard = () => {
     <div className="dashboard-wrapper">
       <main className="detail-pane">
         <header className="page-header">
-          <Text textStyle={"4xl"}>My Services</Text>
-          {/* <button className="btn-primary" onClick={() => setIsCreateModalOpen(true)}>
-            + Create New Service
-          </button> */}
+          <Text textStyle={"5xl"}>All <span className="highlight">Services</span></Text>
+        </header>
 
-          <Button onClick={() => setIsCreateModalOpen(true)} mt={"10"} colorPalette="teal" variant="outline">
+          <Button onClick={() => setIsCreateModalOpen(true)} size={"xl"} rounded="3xl" mt={"10"} colorPalette="teal">
             + Create New Service
           </Button>
-        </header>
 
         <div className="services-grid">
           {services.length>0 ? 
@@ -95,7 +92,9 @@ const Dashboard = () => {
             //   <button className="btn-outline">View Logs</button>
             //   </Link>
             // </div>
-            <Card.Root className='card' width="320px">
+
+            <Card.Root className='feature-card' width="320px">
+              <div className="feature-card-border"></div>
               <Card.Body gap="2">
                 <Card.Title mt="2">{service.applicationName}</Card.Title>
                 <Card.Description>
@@ -108,8 +107,9 @@ const Dashboard = () => {
                   <Button  
                     as={Link}
                     to={`/${service.id}/services`} 
-                    className='button' 
-                    variant="outline">View Logs</Button>
+                    colorPalette={"teal"}
+                    color={"black"}
+                    >View Logs</Button>
               </Card.Footer>
             </Card.Root>
           ))) :

@@ -95,7 +95,7 @@ const ServicesPage = () => {
             <div className="gemini-fix-card">
               <div className="ai-header">
                 <span className="ai-sparkle"></span>
-                <h4>Gemini AI Suggested Fix</h4>
+                <h4>AI Suggested Fix</h4>
               </div>
               <p>{selectedError.aiRca}</p>
 
