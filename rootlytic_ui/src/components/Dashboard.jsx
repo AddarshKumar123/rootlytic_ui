@@ -29,7 +29,7 @@ const Dashboard = () => {
           const res=await axios.get(`${endpoint}/fetch_application`,{
             withCredentials:true
           });
-          setServices(res.data);
+          setServices(res.data);          
       }catch(err){
           if(err.response.status==403){
             navigate("/login");
@@ -106,7 +106,7 @@ const Dashboard = () => {
               <Card.Footer justifyContent="flex-end">
                   <Button  
                     as={Link}
-                    to={`/${service.id}/services`} 
+                    to={`/${service.applicationId}/services`} 
                     colorPalette={"teal"}
                     color={"black"}
                     >View Logs</Button>
