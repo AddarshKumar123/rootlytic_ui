@@ -50,6 +50,9 @@ const Dashboard = () => {
       branch: formData.branch
     }
 
+    console.log(data);
+    
+
     const res=await axios.post(`${endpoint}/create_application`,data,{
       withCredentials:true
     });

@@ -14,9 +14,12 @@ const ServicesPage = () => {
   const [allErrors,setAllErrors]=useState([]);
   const {id} =useParams();
 
-  const handleAiFix=async(id)=>{
-    await axios.post(`${endpoint}/ai-fix/${id}`,{},{withCredentials:true});        
+  const handleAiFix=async(logId)=>{
+    await axios.post(`${endpoint}/ai-fix/${logId}`, {appId: id}, {withCredentials:true});        
   }
+
+  console.log(errors);
+  
 
   useEffect(()=>{
     const fetchLogs=async()=>{
@@ -101,7 +104,7 @@ const ServicesPage = () => {
 
             <div className='doc-section'>
               <CodeBlock.AdapterProvider value={shikiAdapter}>
-                <CodeBlock.Root code={selectedError.aicodeFix || ""} language={"java"}>
+                <CodeBlock.Root code={selectedError.aiCodeFix || ""} language={"java"}>
                   <CodeBlock.Header>
                     <CodeBlock.CopyTrigger asChild>
                       <IconButton variant="ghost" size="2xs">
